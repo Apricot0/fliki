@@ -227,14 +227,4 @@ patches from `mydiffs2` and sends the result along to the third instance,
 which applies patches from `mydiffs3`.  The final result is stored in
 file `new`.
 
-We just mention one other useful command that is often used with pipelines;
-namely `cat`.
-The `cat` command (short for "concatenate and print") is a command that reads
-files specified as arguments, concatenates their contents, and prints the result
-to `stdout`.
-For example, an alternative way to send the contents of a file `old` as input
-to `fliki` is the following:
 
-```
-cat old | bin/fliki mydiffs
-```
