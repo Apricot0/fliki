@@ -1,0 +1,70 @@
+void hunk_show(HUNK *hp, FILE *out) {
+    char *hunk_pointer;
+    fprintf(out,"%d",hp->old_start);
+    if(hp->old_end!=hp->old_start){
+        fprintf(out,",%d",hp->old_end);
+    }
+    fputc(type_to_adc(hp),out);
+    fprintf(out,"%d",hp->new_start);
+    if(hp->new_end!=hp->new_start){
+        fprintf(out,",%d",hp->new_end);
+    }
+    fputc('\n',out);
+    if(compeletly_read==1){
+        if(has_deletion_field==1){
+            hunk_pointer = hunk_deletions_buffer+2;
+            fputc('<',out);
+            fputc(' ',out);
+            while(1){
+                if(*hunk_pointer==0x0){
+                    if(*(hunk_pointer+1)==0x0){
+                        break;
+                    }
+                }
+                if(*hunk_pointer=='\n'){
+                    fputc('\n',out);
+                    if(*(hunk_pointer+1)==0x0&&*(hunk_pointer+2)==0x0){
+                        break;
+                    }
+                    fputc('<',out);
+                    fputc(' ',out);
+                    hunk_pointer=hunk_pointer+2;
+                }else{
+                    fputc(*hunk_pointer,out);
+                }
+                hunk_pointer++;
+            }
+            if(has_addtion_field==1){
+                fputc('-',out);
+                fputc('-',out);
+                fputc('-',out);
+                fputc('\n',out);
+            }
+        }
+        if(has_addtion_field==1){
+            hunk_pointer = hunk_additions_buffer+2;
+            fputc('>',out);
+            fputc(' ',out);
+            while(1){
+                if(*hunk_pointer==0x0){
+                    if(*(hunk_pointer+1)==0x0){
+                        break;
+                    }
+                }
+                if(*hunk_pointer=='\n'){
+                    fputc('\n',out);
+                    if(*(hunk_pointer+1)==0x0&&*(hunk_pointer+2)==0x0){
+                        break;
+                    }
+                    fputc('>',out);
+                    fputc(' ',out);
+                    hunk_pointer=hunk_pointer+2;
+                }else{
+                    fputc(*hunk_pointer,out);
+                }
+                hunk_pointer++;
+            }
+        }
+
+    }
+}
